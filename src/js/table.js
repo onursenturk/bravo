@@ -18,6 +18,14 @@ var thead  = document.getElementById('table-head');
 			container: null,
 			backColor : '',
 			color : "white",
+			tbody : null,
+			thead : null,
+			headers = [ {title: '#',sortPropertyName: 'id', asc:true},
+						{title: 'İsim',sortPropertyName: 'username', asc:true},
+						{title: 'E-posta',sortPropertyName: 'email', asc:true},
+						{title: 'Şehir',sortPropertyName: 'citySelector', asc:true},
+						title: 'Durum',sortPropertyName: 'StatusSelector', asc:true},
+			];
 
 		};
 
