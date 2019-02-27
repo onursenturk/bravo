@@ -5,7 +5,7 @@ var citySelector = document.getElementById("citySelector");
 var statusSelector = document.getElementById("statusSelector");
 var obj;
 var tbody = document.getElementById('table-body');
-var thead  = document.getElementById('table-head');
+var thead  = document.getElementById('tablehead');
 
 
 (function () {
@@ -26,6 +26,7 @@ var thead  = document.getElementById('table-head');
 		        {title:'E-posta',sortPropertyName:'email', asc: true ,selectedKey :true},
 		        {title:'Şehir',sortPropertyName:'citySelector', asc: true ,selectedKey :true},
 		        {title:'Durum',sortPropertyName:'statusSelector', asc: true ,selectedKey :true},
+		        {title:'Sil',sortPropertyName:'delete', asc: true ,selectedKey :true}
 		    ]
 		};
 
@@ -116,7 +117,17 @@ var thead  = document.getElementById('table-head');
 
 	BravoTable.prototype.CreateHeader = function () {
 
-		console.log("onur");
+		 var header;
+
+		for (var i = 0; i < this.options.headers.length; i++) {
+			header = this.options.headers[i].title;
+			var row = document.createElement('td');
+			row.innerHTML = header;
+			thead.appendChild(row);
+			
+		console.log(row); // şu an headers içindeki title olanları çekebiliyorum.//
+
+		}
 
 	}
 
@@ -131,11 +142,7 @@ var thead  = document.getElementById('table-head');
 	BravoTable.prototype.UpdateHeaders = function () {
 
 
-		for (var i = 0; i < this.options.headers.length; i++) {
-			
-			this.CreateHeader();
-		}
-
+		this.CreateHeader();
 	}
 
 
