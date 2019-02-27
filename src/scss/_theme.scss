@@ -1,0 +1,36 @@
+body {
+  font-family: 'Heebo', sans-serif ;
+  font-weight: normal;  
+}
+
+.table {
+	thead {
+		th {
+				cursor: pointer; 
+			div {
+				pointer-events: none;
+			}
+			i {
+				display: none;
+			}
+			&.active {
+				&[data-asc="true"] {
+					i.fa-sort-down {
+						display: block;
+
+					}
+				}
+				&[data-asc="false"] {
+					i.fa-sort-up {
+						display: block;
+					}
+				}
+			}
+			&.has-action {
+				i {
+					display: block;
+				}
+			}
+		}
+	}
+}
