@@ -4,7 +4,6 @@ var email = document.getElementById("email");
 var citySelector = document.getElementById("citySelector");
 var statusSelector = document.getElementById("statusSelector");
 var obj;
-var myProperties = [];
 var tbody = document.getElementById('table-body');
 var thead  = document.getElementById('table-head');
 
@@ -20,13 +19,14 @@ var thead  = document.getElementById('table-head');
 			color : "white",
 			tbody : null,
 			thead : null,
-			headers = [ {title: '#',sortPropertyName: 'id', asc:true},
-						{title: 'İsim',sortPropertyName: 'username', asc:true},
-						{title: 'E-posta',sortPropertyName: 'email', asc:true},
-						{title: 'Şehir',sortPropertyName: 'citySelector', asc:true},
-						title: 'Durum',sortPropertyName: 'StatusSelector', asc:true},
-			];
-
+			rows : null,
+			headers: [
+		        {title:'#',sortPropertyName:'id', asc: true ,selectedKey :true},
+		        {title:'İsim',sortPropertyName:'username', asc: true ,selectedKey :true},
+		        {title:'E-posta',sortPropertyName:'email', asc: true ,selectedKey :true},
+		        {title:'Şehir',sortPropertyName:'citySelector', asc: true ,selectedKey :true},
+		        {title:'Durum',sortPropertyName:'statusSelector', asc: true ,selectedKey :true},
+		    ]
 		};
 
 		if (arguments[0] && typeof arguments[0] === "object") {
@@ -37,8 +37,9 @@ var thead  = document.getElementById('table-head');
 	BravoTable.prototype.init = function () {
 
 		this.options.container = document.getElementById(this.options.containerId);
-		myProperties = JSON.parse(localStorage.getItem('localeusertable'));
+		this.options.rows = JSON.parse(localStorage.getItem('localeusertable'));
 		this.updateTable();
+		this.UpdateHeaders();
 		//document.getElementById('theadUsername').addEventListener("click", this.sortPerson.bind(this));
 
 
@@ -47,8 +48,8 @@ var thead  = document.getElementById('table-head');
 	BravoTable.prototype.updateTable = function () {
 
 		tbody.innerHTML = "";
-		for ( i = 0; i < myProperties.length; i++ ) {
-			this.createRow(myProperties[i], i);
+		for ( i = 0; i < this.options.rows.length; i++ ) {
+			this.createRow(this.options.rows[i], i);
 
 
 		}
@@ -98,8 +99,8 @@ var thead  = document.getElementById('table-head');
 	BravoTable.prototype.removePerson = function ( event ) {
 
 		var activeIndex = parseInt(event.target.getAttribute('data-index'));
-		myProperties.splice(activeIndex, 1);
-		localStorage.setItem('localeusertable', JSON.stringify(myProperties));
+		this.options.rows.splice(activeIndex, 1);
+		localStorage.setItem('localeusertable', JSON.stringify(this.options.rows));
 		this.updateTable();
 		this.getFormIds.bind(this);
 
@@ -107,11 +108,15 @@ var thead  = document.getElementById('table-head');
 
 	BravoTable.prototype.sortPerson = function (rowData , index) {
 
-	
+
+
+
 
 	}
 
 	BravoTable.prototype.CreateHeader = function () {
+
+		console.log("onur");
 
 	}
 
@@ -124,6 +129,12 @@ var thead  = document.getElementById('table-head');
 	}
 
 	BravoTable.prototype.UpdateHeaders = function () {
+
+
+		for (var i = 0; i < this.options.headers.length; i++) {
+			
+			this.CreateHeader();
+		}
 
 	}
 
