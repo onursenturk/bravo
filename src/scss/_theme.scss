@@ -1,12 +1,13 @@
 body {
-  font-family: 'Heebo', sans-serif ;
-  font-weight: normal;  
+	font-family: 'Heebo', sans-serif ;
+	font-weight: normal;  
 }
 
 .table {
 	thead {
+		cursor: pointer; 
 		th {
-				cursor: pointer; 
+
 			div {
 				pointer-events: none;
 			}

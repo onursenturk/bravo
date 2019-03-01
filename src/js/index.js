@@ -1,6 +1,7 @@
 
 var TableObject = new BravoTable ({
-	containerId : 'data-table'
+	containerId : 'data-table',
+	form : FormObject
 });
 
 TableObject.init();

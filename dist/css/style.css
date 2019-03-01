@@ -7454,7 +7454,7 @@ body {
   font-family: 'Heebo', sans-serif;
   font-weight: normal; }
 
-.table thead th {
+.table thead {
   cursor: pointer; }
   .table thead th div {
     pointer-events: none; }

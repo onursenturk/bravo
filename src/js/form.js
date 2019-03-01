@@ -20,6 +20,7 @@
   BravoForm.prototype.init = function () {
 
     this.options.container = document.getElementById(this.options.containerId);
+    this.options.rows = JSON.parse(localStorage.getItem('localeusertable'));
     document.getElementById('submitButton').addEventListener("click", this.addPerson.bind(this));
 
 
@@ -45,14 +46,12 @@
     obj.citySelector = citySelector.value;
     obj.statusSelector = statusSelector.value;
 
-    this.options.rows = JSON.parse(localStorage.getItem('localeusertable')) || [];
-    this.options.rows.push(obj);
-    localStorage.setItem('localeusertable', JSON.stringify(this.options.rows));
+    this.options.table.rows = JSON.parse(localStorage.getItem('localeusertable')) || [];
+    this.options.table.rows.push(obj);
+    localStorage.setItem('localeusertable', JSON.stringify(this.options.table.rows));
 
     this.options.table.updateTable();
     clearAreas();
-    console.log(obj.id);
-
 
   }
 

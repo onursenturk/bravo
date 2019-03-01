@@ -20,14 +20,15 @@ var thead  = document.getElementById('tablehead');
 			tbody : null,
 			thead : null,
 			rows : null,
+			form :null,
 			headers: [
-		        {title:'#',sortPropertyName:'id', asc: true ,selectedKey :true},
-		        {title:'İsim',sortPropertyName:'username', asc: true ,selectedKey :true},
-		        {title:'E-posta',sortPropertyName:'email', asc: true ,selectedKey :true},
-		        {title:'Şehir',sortPropertyName:'citySelector', asc: true ,selectedKey :true},
-		        {title:'Durum',sortPropertyName:'statusSelector', asc: true ,selectedKey :true},
-		        {title:'Sil',sortPropertyName:'delete', asc: true ,selectedKey :true}
-		    ]
+			{title:'#',sortPropertyName:'id', asc: true ,selectedKey :true},
+			{title:'İsim',sortPropertyName:'username', asc: true ,selectedKey :true},
+			{title:'E-posta',sortPropertyName:'email', asc: true ,selectedKey :true},
+			{title:'Şehir',sortPropertyName:'citySelector', asc: true ,selectedKey :true},
+			{title:'Durum',sortPropertyName:'statusSelector', asc: true ,selectedKey :true},
+			{title:'Sil',sortPropertyName:'delete', asc: true ,selectedKey :true}
+			]
 		};
 
 		if (arguments[0] && typeof arguments[0] === "object") {
@@ -48,16 +49,22 @@ var thead  = document.getElementById('tablehead');
 
 	BravoTable.prototype.updateTable = function () {
 
+		this.options.rows = JSON.parse(localStorage.getItem('localeusertable'));
+
 		tbody.innerHTML = "";
 		for ( i = 0; i < this.options.rows.length; i++ ) {
 			this.createRow(this.options.rows[i], i);
 
 
 		}
+
+		console.log("update içinde : " + this.options.rows.length);
 	}
 	
 
 	BravoTable.prototype.createRow = function ( rowData, index ) {
+
+		console.log("createRow icinde : " + this.options.rows.length);
 
 		var row = document.createElement('tr');
 
@@ -117,7 +124,7 @@ var thead  = document.getElementById('tablehead');
 
 	BravoTable.prototype.CreateHeader = function () {
 
-		 var header;
+		var header;
 
 		for (var i = 0; i < this.options.headers.length; i++) {
 			header = this.options.headers[i].title;
@@ -125,39 +132,39 @@ var thead  = document.getElementById('tablehead');
 			row.innerHTML = header;
 			thead.appendChild(row);
 			
-		console.log(row); // şu an headers içindeki title olanları çekebiliyorum.//
+		//console.log(row); // şu an headers içindeki title olanları çekebiliyorum.//
 
+	}
+
+}
+
+BravoTable.prototype.SortRows = function () {
+
+}
+
+BravoTable.prototype.UpdateSortIcons = function () {
+
+}
+
+BravoTable.prototype.UpdateHeaders = function () {
+
+
+	this.CreateHeader();
+}
+
+
+
+
+
+function extendDefaults(source, properties) {
+	var property;
+	for (property in properties) {
+		if (properties.hasOwnProperty(property)) {
+			source[property] = properties[property];
 		}
-
 	}
-
-	BravoTable.prototype.SortRows = function () {
-
-	}
-
-	BravoTable.prototype.UpdateSortIcons = function () {
-
-	}
-
-	BravoTable.prototype.UpdateHeaders = function () {
-
-
-		this.CreateHeader();
-	}
-
-
-
-
-
-	function extendDefaults(source, properties) {
-		var property;
-		for (property in properties) {
-			if (properties.hasOwnProperty(property)) {
-				source[property] = properties[property];
-			}
-		}
-		return source;
-	}
+	return source;
+}
 
 
 
