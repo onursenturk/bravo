@@ -21,6 +21,7 @@ var thead  = document.getElementById('tablehead');
 			thead : null,
 			rows : null,
 			form :null,
+			activeSort :null,
 			headers: [
 			{title:'#',sortPropertyName:'id', asc: true ,selectedKey :true},
 			{title:'İsim',sortPropertyName:'username', asc: true ,selectedKey :true},
@@ -39,32 +40,32 @@ var thead  = document.getElementById('tablehead');
 	BravoTable.prototype.init = function () {
 
 		this.options.container = document.getElementById(this.options.containerId);
-		this.options.rows = JSON.parse(localStorage.getItem('localeusertable'));
-		this.updateTable();
+		this.getData();
 		this.UpdateHeaders();
-		//document.getElementById('theadUsername').addEventListener("click", this.sortPerson.bind(this));
+		this.sortPerson();
+		this.updateTable();
 
+		document.getElementById('save').addEventListener("click",this.SortRows.bind(this));
+
+	}
+
+	BravoTable.prototype.getData = function () {
+
+		this.options.rows = JSON.parse(localStorage.getItem('localeusertable'));
 
 	}
 
 	BravoTable.prototype.updateTable = function () {
 
-		this.options.rows = JSON.parse(localStorage.getItem('localeusertable'));
+		this.getData();
 
 		tbody.innerHTML = "";
 		for ( i = 0; i < this.options.rows.length; i++ ) {
 			this.createRow(this.options.rows[i], i);
-
-
 		}
-
-		console.log("update içinde : " + this.options.rows.length);
 	}
-	
 
 	BravoTable.prototype.createRow = function ( rowData, index ) {
-
-		console.log("createRow icinde : " + this.options.rows.length);
 
 		var row = document.createElement('tr');
 
@@ -100,7 +101,6 @@ var thead  = document.getElementById('tablehead');
 
 		tbody.appendChild(row);
 
-
 	}
 
 
@@ -114,31 +114,62 @@ var thead  = document.getElementById('tablehead');
 
 	}
 
-	BravoTable.prototype.sortPerson = function (rowData , index) {
+	BravoTable.prototype.sortPerson = function (header , event) {
+
+		this.options.activeSort = this.options.headers[1];
+		console.log(this.options.activeSort);
+/*
+		if(this.options.activeSort === header) {
+            header.asc = !header.asc; //toggle the direction of the sort
+        } else {
+            this.options.activeSort = header; //first click, remember it
+        }
+        */
+        var prop = this.options.activeSort.sortPropertyName;
+
+        console.log(prop);
+
+        var ascSort = function(a,b){ return a[prop] < b[prop] ? -1 : a[prop] > b[prop] ? 1 : a[prop] == b[prop] ? 0 : 0; };
+        var descSort = function(a,b){ return a[prop] > b[prop] ? -1 : a[prop] < b[prop] ? 1 : a[prop] == b[prop] ? 0 : 0; };
+
+        var sortFunc = this.options.activeSort.asc ? ascSort : descSort;
+
+        this.options.rows.sort(sortFunc);
 
 
 
+        //console.log(this.options.rows);
+    }
 
+    BravoTable.prototype.CreateHeader = function () {
 
-	}
+    	var header;
 
-	BravoTable.prototype.CreateHeader = function () {
+    	for (var i = 0; i < this.options.headers.length; i++) {
+    		header = this.options.headers[i].title;
+    		var row = document.createElement('td');
+    		row.innerHTML = header;
+    		thead.appendChild(row);
 
-		var header;
+    		row.addEventListener("click",this.sortPerson.bind(this));
 
-		for (var i = 0; i < this.options.headers.length; i++) {
-			header = this.options.headers[i].title;
-			var row = document.createElement('td');
-			row.innerHTML = header;
-			thead.appendChild(row);
-			
 		//console.log(row); // şu an headers içindeki title olanları çekebiliyorum.//
 
 	}
 
+
 }
 
 BravoTable.prototype.SortRows = function () {
+
+	this.sortPerson();
+	console.log(this.options.rows);
+
+	for ( i = 0; i < this.options.rows.length; i++ ) {
+		this.createRow(this.options.rows[i], i);
+	}
+
+
 
 }
 
@@ -148,12 +179,10 @@ BravoTable.prototype.UpdateSortIcons = function () {
 
 BravoTable.prototype.UpdateHeaders = function () {
 
-
+	var row = document.querySelectorAll('tr');
+	row.innerHTML = '' ;
 	this.CreateHeader();
 }
-
-
-
 
 
 function extendDefaults(source, properties) {
