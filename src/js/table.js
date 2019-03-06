@@ -7,7 +7,6 @@ var obj;
 var tbody = document.getElementById('table-body');
 var thead  = document.getElementById('tablehead');
 
-
 (function () {
 
 	this.BravoTable = function () {
@@ -44,7 +43,6 @@ var thead  = document.getElementById('tablehead');
 		this.UpdateHeaders();
 		// this.sortPerson();
 		this.updateTable();
-
 		document.getElementById('save').addEventListener("click",this.SortRows.bind(this));
 
 	}
@@ -61,14 +59,12 @@ var thead  = document.getElementById('tablehead');
 		for ( i = 0; i < this.options.rows.length; i++ ) {
 			this.createRow(this.options.rows[i], i);
 		}
-
 	}
 
 	BravoTable.prototype.updateTable = function () {
 
 		this.getData();
 		this.setData();
-
 	}
 
 	BravoTable.prototype.createRow = function ( rowData, index ) {
@@ -127,7 +123,7 @@ var thead  = document.getElementById('tablehead');
 		console.log(index);
 
 		this.options.activeSort = this.options.headers[index];
-		//console.log(this.options.activeSort);
+		console.log(this.options.activeSort);
 		
 		if(this.options.activeSort === this.options.headers[index]) {
             this.options.headers[index].asc = !this.options.headers[index].asc; //toggle the direction of the sort
@@ -137,20 +133,15 @@ var thead  = document.getElementById('tablehead');
         
         var prop = this.options.activeSort.sortPropertyName;
 
-        //console.log(prop);
-
-        var ascSort = function(a,b){ return a[prop] < b[prop] ? -1 : a[prop] > b[prop] ? 1 : a[prop] == b[prop] ? 0 : 0; };
-        var descSort = function(a,b){ return a[prop] > b[prop] ? -1 : a[prop] < b[prop] ? 1 : a[prop] == b[prop] ? 0 : 0; };
+        var ascSort = function(a,b){ return a[prop] < b[prop] ? -1 :
+         a[prop] > b[prop] ? 1 : a[prop] == b[prop] ? 0 : 0; };
+        var descSort = function(a,b){ return a[prop] > b[prop] ? -1 :
+         a[prop] < b[prop] ? 1 : a[prop] == b[prop] ? 0 : 0; };
 
         var sortFunc = this.options.activeSort.asc ? ascSort : descSort;
 
-        //console.log(this.options.activeSort.asc);
-
         this.options.rows.sort(sortFunc);
-
-
-
-        //console.log(this.options.rows);
+        this.SortRows();
     }
 
     BravoTable.prototype.CreateHeader = function (event) {
@@ -165,30 +156,12 @@ var thead  = document.getElementById('tablehead');
     		header.addEventListener("click",this.sortPerson.bind(this));
     		theadTr.appendChild(header);
 
-
-
-    		// header.value = this.options.headers[i].title;
-    		// header.setAttribute('data-index', i);
-    		// var row = document.createElement('td');
-    		// row.innerHTML = header.value;
-
-   //  		thead.appendChild(row);
-
-   //  		row.addEventListener("click",this.sortPerson.bind(this));
-
-			// console.log(header.id); // şu an headers içindeki title olanları çekebiliyorum.//
-
 		}
-
-
-
 	}
 
 
 	BravoTable.prototype.SortRows = function () {
 
-		// this.sortPerson();
-		//console.log(this.options.rows);
 		this.setData();
 
 	}
@@ -204,7 +177,6 @@ var thead  = document.getElementById('tablehead');
 		this.CreateHeader();
 	}
 
-
 	function extendDefaults(source, properties) {
 		var property;
 		for (property in properties) {
@@ -214,8 +186,6 @@ var thead  = document.getElementById('tablehead');
 		}
 		return source;
 	}
-
-
 
 })();
 
