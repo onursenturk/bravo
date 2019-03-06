@@ -23,12 +23,12 @@ var thead  = document.getElementById('tablehead');
 			form :null,
 			activeSort :null,
 			headers: [
-			{title:'#',sortPropertyName:'id', asc: true ,selectedKey :true},
-			{title:'İsim',sortPropertyName:'username', asc: true ,selectedKey :true},
-			{title:'E-posta',sortPropertyName:'email', asc: true ,selectedKey :true},
-			{title:'Şehir',sortPropertyName:'citySelector', asc: true ,selectedKey :true},
-			{title:'Durum',sortPropertyName:'statusSelector', asc: true ,selectedKey :true},
-			{title:'Sil',sortPropertyName:'delete', asc: true ,selectedKey :true}
+			{title:'#',sortPropertyName:'id', dataindex: 0, asc: true ,selectedKey :true},
+			{title:'İsim',sortPropertyName:'username', dataindex: 1, asc: true ,selectedKey :true},
+			{title:'E-posta',sortPropertyName:'email', dataindex: 2, asc: true ,selectedKey :true},
+			{title:'Şehir',sortPropertyName:'citySelector', dataindex: 3, asc: true ,selectedKey :true},
+			{title:'Durum',sortPropertyName:'statusSelector', dataindex: 4, asc: true ,selectedKey :true},
+			{title:'Sil',sortPropertyName:'delete', asc: true , dataindex: 5, selectedKey :true}
 			]
 		};
 
@@ -42,7 +42,7 @@ var thead  = document.getElementById('tablehead');
 		this.options.container = document.getElementById(this.options.containerId);
 		this.getData();
 		this.UpdateHeaders();
-		this.sortPerson();
+		// this.sortPerson();
 		this.updateTable();
 
 		document.getElementById('save').addEventListener("click",this.SortRows.bind(this));
@@ -120,27 +120,31 @@ var thead  = document.getElementById('tablehead');
 
 	}
 
-	BravoTable.prototype.sortPerson = function (headers , event) {
+	BravoTable.prototype.sortPerson = function (event) {
 
-		this.options.activeSort = this.options.headers[1];
-		console.log(this.options.activeSort);
+		var index = parseInt(event.target.getAttribute('data-index'));
+		// var index  = this.options.headers[3].dataindex;
+		console.log(index);
+
+		this.options.activeSort = this.options.headers[index];
+		//console.log(this.options.activeSort);
 		
-		if(this.options.activeSort === this.options.headers[1]) {
-            this.options.headers[1].asc = !this.options.headers[1].asc; //toggle the direction of the sort
+		if(this.options.activeSort === this.options.headers[index]) {
+            this.options.headers[index].asc = !this.options.headers[index].asc; //toggle the direction of the sort
         } else {
-            this.options.activeSort = this.options.headers[1]; //first click, remember it
+            this.options.activeSort = this.options.headers[index]; //first click, remember it
         }
         
         var prop = this.options.activeSort.sortPropertyName;
 
-        console.log(prop);
+        //console.log(prop);
 
         var ascSort = function(a,b){ return a[prop] < b[prop] ? -1 : a[prop] > b[prop] ? 1 : a[prop] == b[prop] ? 0 : 0; };
         var descSort = function(a,b){ return a[prop] > b[prop] ? -1 : a[prop] < b[prop] ? 1 : a[prop] == b[prop] ? 0 : 0; };
 
         var sortFunc = this.options.activeSort.asc ? ascSort : descSort;
 
-        console.log(this.options.activeSort.asc);
+        //console.log(this.options.activeSort.asc);
 
         this.options.rows.sort(sortFunc);
 
@@ -149,31 +153,42 @@ var thead  = document.getElementById('tablehead');
         //console.log(this.options.rows);
     }
 
-    BravoTable.prototype.CreateHeader = function () {
+    BravoTable.prototype.CreateHeader = function (event) {
 
-    	var header;
+    	var theadTr = document.getElementsByTagName('thead')[0].querySelectorAll('tr')[0];
 
     	for (var i = 0; i < this.options.headers.length; i++) {
-    		header = this.options.headers[i].title;
-    		var row = document.createElement('td');
-    		row.innerHTML = header;
-    		thead.appendChild(row);
 
-    		row.addEventListener("click",this.SortRows.bind(this));
+    		var header = document.createElement('th');
+    		header.setAttribute('data-index', i);
+    		header.innerHTML = this.options.headers[i].title;
+    		header.addEventListener("click",this.sortPerson.bind(this));
+    		theadTr.appendChild(header);
 
-    		console.log(header);
 
-		//console.log(row); // şu an headers içindeki title olanları çekebiliyorum.//
+
+    		// header.value = this.options.headers[i].title;
+    		// header.setAttribute('data-index', i);
+    		// var row = document.createElement('td');
+    		// row.innerHTML = header.value;
+
+   //  		thead.appendChild(row);
+
+   //  		row.addEventListener("click",this.sortPerson.bind(this));
+
+			// console.log(header.id); // şu an headers içindeki title olanları çekebiliyorum.//
 
 		}
 
 
+
 	}
+
 
 	BravoTable.prototype.SortRows = function () {
 
-		this.sortPerson();
-		console.log(this.options.rows);
+		// this.sortPerson();
+		//console.log(this.options.rows);
 		this.setData();
 
 	}
@@ -190,15 +205,15 @@ var thead  = document.getElementById('tablehead');
 	}
 
 
-function extendDefaults(source, properties) {
-	var property;
-	for (property in properties) {
-		if (properties.hasOwnProperty(property)) {
-			source[property] = properties[property];
+	function extendDefaults(source, properties) {
+		var property;
+		for (property in properties) {
+			if (properties.hasOwnProperty(property)) {
+				source[property] = properties[property];
+			}
 		}
+		return source;
 	}
-	return source;
-}
 
 
 
