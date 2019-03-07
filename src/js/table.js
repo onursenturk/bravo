@@ -134,58 +134,62 @@ var thead  = document.getElementById('tablehead');
         var prop = this.options.activeSort.sortPropertyName;
 
         var ascSort = function(a,b){ return a[prop] < b[prop] ? -1 :
-         a[prop] > b[prop] ? 1 : a[prop] == b[prop] ? 0 : 0; };
-        var descSort = function(a,b){ return a[prop] > b[prop] ? -1 :
-         a[prop] < b[prop] ? 1 : a[prop] == b[prop] ? 0 : 0; };
+        	a[prop] > b[prop] ? 1 : a[prop] == b[prop] ? 0 : 0; };
+        	var descSort = function(a,b){ return a[prop] > b[prop] ? -1 :
+        		a[prop] < b[prop] ? 1 : a[prop] == b[prop] ? 0 : 0; };
 
-        var sortFunc = this.options.activeSort.asc ? ascSort : descSort;
+        		var sortFunc = this.options.activeSort.asc ? ascSort : descSort;
 
-        this.options.rows.sort(sortFunc);
-        this.SortRows();
-    }
+        		this.options.rows.sort(sortFunc);
+        		this.SortRows();
+        	}
 
-    BravoTable.prototype.CreateHeader = function (event) {
+        	BravoTable.prototype.CreateHeader = function (event) {
 
-    	var theadTr = document.getElementsByTagName('thead')[0].querySelectorAll('tr')[0];
+        		var theadTr = document.getElementsByTagName('thead')[0].querySelectorAll('tr')[0];
+        		var iconUp = '<i class="fa fa-sort-up"></i>';
+        		var iconDown = '<i class="fa fa-sort-down"></i>';
 
-    	for (var i = 0; i < this.options.headers.length; i++) {
-
-    		var header = document.createElement('th');
-    		header.setAttribute('data-index', i);
-    		header.innerHTML = this.options.headers[i].title;
-    		header.addEventListener("click",this.sortPerson.bind(this));
-    		theadTr.appendChild(header);
-
-		}
-	}
+        		for (var i = 0; i < this.options.headers.length; i++) {
 
 
-	BravoTable.prototype.SortRows = function () {
+        			var header = document.createElement('th');
+        			header.setAttribute('data-index', i);
+        			header.innerHTML = this.options.headers[i].title + iconDown  ;
+        			header.addEventListener("click",this.sortPerson.bind(this));
+        			theadTr.appendChild(header);
 
-		this.setData();
+        		}
+        	}
 
-	}
 
-	BravoTable.prototype.UpdateSortIcons = function () {
+        	BravoTable.prototype.SortRows = function () {
 
-	}
+        		this.setData();
 
-	BravoTable.prototype.UpdateHeaders = function () {
+        	}
 
-		var row = document.querySelectorAll('tr');
-		row.innerHTML = '' ;
-		this.CreateHeader();
-	}
+        	BravoTable.prototype.UpdateSortIcons = function () {
 
-	function extendDefaults(source, properties) {
-		var property;
-		for (property in properties) {
-			if (properties.hasOwnProperty(property)) {
-				source[property] = properties[property];
-			}
-		}
-		return source;
-	}
 
-})();
+        	}
+
+        	BravoTable.prototype.UpdateHeaders = function () {
+
+        		var row = document.querySelectorAll('tr');
+        		row.innerHTML = '' ;
+        		this.CreateHeader();
+        	}
+
+        	function extendDefaults(source, properties) {
+        		var property;
+        		for (property in properties) {
+        			if (properties.hasOwnProperty(property)) {
+        				source[property] = properties[property];
+        			}
+        		}
+        		return source;
+        	}
+
+        })();
 

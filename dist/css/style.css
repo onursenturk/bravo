@@ -7459,7 +7459,7 @@ body {
   .table thead th div {
     pointer-events: none; }
   .table thead th i {
-    display: none; }
+    color: white; }
   .table thead th.active[data-asc="true"] i.fa-sort-down {
     display: block; }
   .table thead th.active[data-asc="false"] i.fa-sort-up {

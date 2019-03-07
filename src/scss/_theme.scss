@@ -12,7 +12,8 @@ body {
 				pointer-events: none;
 			}
 			i {
-				display: none;
+				//display: none;
+				color: white;
 			}
 			&.active {
 				&[data-asc="true"] {
