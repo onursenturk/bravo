@@ -7454,15 +7454,16 @@ body {
   font-family: 'Heebo', sans-serif;
   font-weight: normal; }
 
-.table thead {
+.table #tablehead {
   cursor: pointer; }
-  .table thead th div {
+  .table #tablehead th div, .table #tablehead th span {
     pointer-events: none; }
-  .table thead th i {
-    color: white; }
-  .table thead th.active[data-asc="true"] i.fa-sort-down {
+  .table #tablehead th i {
+    display: none;
+    color: red;
+    pointer-events: none;
+    color: pink; }
+  .table #tablehead th[data-asc="true"] i.fa-sort-down {
     display: block; }
-  .table thead th.active[data-asc="false"] i.fa-sort-up {
-    display: block; }
-  .table thead th.has-action i {
+  .table #tablehead th[data-asc="false"] i.fa-sort-up {
     display: block; }

@@ -4,32 +4,26 @@ body {
 }
 
 .table {
-	thead {
+	#tablehead {
 		cursor: pointer; 
 		th {
 
-			div {
+			div, span {
 				pointer-events: none;
 			}
 			i {
-				//display: none;
-				color: white;
+				display: none;
+				color: red;
+				pointer-events: none;
+				color : pink;
 			}
-			&.active {
-				&[data-asc="true"] {
-					i.fa-sort-down {
-						display: block;
-
-					}
-				}
-				&[data-asc="false"] {
-					i.fa-sort-up {
-						display: block;
-					}
+			&[data-asc="true"] {
+				i.fa-sort-down {
+					display: block;
 				}
 			}
-			&.has-action {
-				i {
+			&[data-asc="false"] {
+				i.fa-sort-up {
 					display: block;
 				}
 			}

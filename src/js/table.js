@@ -22,12 +22,12 @@ var thead  = document.getElementById('tablehead');
 			form :null,
 			activeSort :null,
 			headers: [
-			{title:'#',sortPropertyName:'id', dataindex: 0, asc: true ,selectedKey :true},
-			{title:'İsim',sortPropertyName:'username', dataindex: 1, asc: true ,selectedKey :true},
-			{title:'E-posta',sortPropertyName:'email', dataindex: 2, asc: true ,selectedKey :true},
-			{title:'Şehir',sortPropertyName:'citySelector', dataindex: 3, asc: true ,selectedKey :true},
-			{title:'Durum',sortPropertyName:'statusSelector', dataindex: 4, asc: true ,selectedKey :true},
-			{title:'Sil',sortPropertyName:'delete', asc: true , dataindex: 5, selectedKey :true}
+				{title:'#',sortPropertyName:'id', dataindex: 0, asc: true ,selectedKey :false, sortable: true},
+				{title:'İsim',sortPropertyName:'username', dataindex: 1, asc: true ,selectedKey :false, sortable: true},
+				{title:'E-posta',sortPropertyName:'email', dataindex: 2, asc: true ,selectedKey :false, sortable: true},
+				{title:'Şehir',sortPropertyName:'citySelector', dataindex: 3, asc: true ,selectedKey :false, sortable: true},
+				{title:'Durum',sortPropertyName:'statusSelector', dataindex: 4, asc: true ,selectedKey :false, sortable: true},
+				{title:'Sil',sortPropertyName:'delete', asc: true , dataindex: 5, selectedKey :false, sortable: false}
 			]
 		};
 
@@ -119,77 +119,106 @@ var thead  = document.getElementById('tablehead');
 	BravoTable.prototype.sortPerson = function (event) {
 
 		var index = parseInt(event.target.getAttribute('data-index'));
-		// var index  = this.options.headers[3].dataindex;
-		console.log(index);
 
-		this.options.activeSort = this.options.headers[index];
-		console.log(this.options.activeSort);
-		
-		if(this.options.activeSort === this.options.headers[index]) {
-            this.options.headers[index].asc = !this.options.headers[index].asc; //toggle the direction of the sort
-        } else {
-            this.options.activeSort = this.options.headers[index]; //first click, remember it
-        }
+		this.toggleSortIcons(index);
         
-        var prop = this.options.activeSort.sortPropertyName;
+        var prop = this.options.headers[index].sortPropertyName;
 
         var ascSort = function(a,b){ return a[prop] < b[prop] ? -1 :
         	a[prop] > b[prop] ? 1 : a[prop] == b[prop] ? 0 : 0; };
-        	var descSort = function(a,b){ return a[prop] > b[prop] ? -1 :
+        var descSort = function(a,b){ return a[prop] > b[prop] ? -1 :
         		a[prop] < b[prop] ? 1 : a[prop] == b[prop] ? 0 : 0; };
 
-        		var sortFunc = this.options.activeSort.asc ? ascSort : descSort;
+        var sortFunc = this.options.headers[index].asc ? ascSort : descSort;
 
-        		this.options.rows.sort(sortFunc);
-        		this.SortRows();
-        	}
+        this.options.rows.sort(sortFunc);
+        this.SortRows();
 
-        	BravoTable.prototype.CreateHeader = function (event) {
+    }
 
-        		var theadTr = document.getElementsByTagName('thead')[0].querySelectorAll('tr')[0];
-        		var iconUp = '<i class="fa fa-sort-up"></i>';
-        		var iconDown = '<i class="fa fa-sort-down"></i>';
+    BravoTable.prototype.toggleSortIcons = function ( index ) {
 
-        		for (var i = 0; i < this.options.headers.length; i++) {
+    	var headers = document.getElementsByTagName('th');
+
+    	for ( var i = 0; i < this.options.headers.length; i++ ) {
+
+    		if ( index === i ) {
+    			this.options.headers[i].asc = !this.options.headers[i].asc;
+    		} else {
+    			this.options.headers[i].asc = null;
+    		}
+
+    		headers[i].setAttribute('data-asc', this.options.headers[i].asc);
+
+    	}
+
+    }
+
+	BravoTable.prototype.CreateHeader = function (event) {
+
+		var theadTr = document.getElementsByTagName('thead')[0].querySelectorAll('tr')[0];
+		//var iconUp = '<i class="fa fa-sort-up"></i>';
+		//var iconDown = '<i class="fa fa-sort-down"></i>';
+
+		for (var i = 0; i < this.options.headers.length; i++) {
+
+			var header = document.createElement('th');
+			header.setAttribute('data-index',i);
+			var wrapper = document.createElement('div');
+			wrapper.classList.add('d-flex', 'd-flex-row', 'justify-content-between', 'align-items-center');
+			var title = document.createElement('span');
+			title.innerHTML = this.options.headers[i].title;
+			wrapper.appendChild(title);
+
+			if (this.options.headers[i].sortable ) {
+
+				var iconUp = document.createElement('i');
+				var iconDown = document.createElement('i');
+				iconDown.classList.add("active","fa","fa-sort-down","has-action");
+				iconUp.classList.add("active","fa","fa-sort-up","has-action");
+				wrapper.appendChild(iconUp);
+				wrapper.appendChild(iconDown);
+				header.addEventListener("click",this.sortPerson.bind(this));
+
+			}
+
+			header.appendChild(wrapper);
+			theadTr.appendChild(header);
+
+		}
+	}
 
 
-        			var header = document.createElement('th');
-        			header.setAttribute('data-index', i);
-        			header.innerHTML = this.options.headers[i].title + iconDown  ;
-        			header.addEventListener("click",this.sortPerson.bind(this));
-        			theadTr.appendChild(header);
+	BravoTable.prototype.SortRows = function () {
 
-        		}
-        	}
+		this.setData();
+		this.UpdateSortIcons();
 
+	}
 
-        	BravoTable.prototype.SortRows = function () {
+	BravoTable.prototype.UpdateSortIcons = function () {
 
-        		this.setData();
+		var index = parseInt(event.target.getAttribute('data-index'));
+		// var index  = this.options.headers[3].dataindex;
+		console.log(index);
+	}
 
-        	}
+	BravoTable.prototype.UpdateHeaders = function () {
 
-        	BravoTable.prototype.UpdateSortIcons = function () {
+		var row = document.querySelectorAll('tr');
+		row.innerHTML = '' ;
+		this.CreateHeader();
+	}
 
+	function extendDefaults(source, properties) {
+		var property;
+		for (property in properties) {
+			if (properties.hasOwnProperty(property)) {
+				source[property] = properties[property];
+			}
+		}
+		return source;
+	}
 
-        	}
-
-        	BravoTable.prototype.UpdateHeaders = function () {
-
-        		var row = document.querySelectorAll('tr');
-        		row.innerHTML = '' ;
-        		this.CreateHeader();
-        	}
-
-        	function extendDefaults(source, properties) {
-        		var property;
-        		for (property in properties) {
-        			if (properties.hasOwnProperty(property)) {
-        				source[property] = properties[property];
-        			}
-        		}
-        		return source;
-        	}
-
-        })();
+ })();
 
