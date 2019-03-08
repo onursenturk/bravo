@@ -208,6 +208,10 @@ var thead  = document.getElementById('tablehead');
 		var row = document.querySelectorAll('tr');
 		row.innerHTML = '' ;
 		this.CreateHeader();
+		this.SearchUsername();
+	}
+
+	BravoTable.prototype.SearchUsername = function () {
 	}
 
 	function extendDefaults(source, properties) {
