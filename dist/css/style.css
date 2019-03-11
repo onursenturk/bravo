@@ -7462,7 +7462,7 @@ body {
     display: none;
     color: red;
     pointer-events: none;
-    color: pink; }
+    color: white; }
   .table #tablehead th[data-asc="true"] i.fa-sort-down {
     display: block; }
   .table #tablehead th[data-asc="false"] i.fa-sort-up {

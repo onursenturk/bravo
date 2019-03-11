@@ -6,6 +6,8 @@ var statusSelector = document.getElementById("statusSelector");
 var obj;
 var tbody = document.getElementById('table-body');
 var thead  = document.getElementById('tablehead');
+var InformationLabel = document.getElementById("InformationLabel");
+
 
 (function () {
 
@@ -41,9 +43,9 @@ var thead  = document.getElementById('tablehead');
 		this.options.container = document.getElementById(this.options.containerId);
 		this.getData();
 		this.UpdateHeaders();
-		// this.sortPerson();
 		this.updateTable();
 		document.getElementById('save').addEventListener("click",this.SortRows.bind(this));
+		document.getElementById('SearchInputButton').addEventListener("click",this.GetUsernames.bind(this));
 
 	}
 
@@ -157,8 +159,6 @@ var thead  = document.getElementById('tablehead');
 	BravoTable.prototype.CreateHeader = function (event) {
 
 		var theadTr = document.getElementsByTagName('thead')[0].querySelectorAll('tr')[0];
-		//var iconUp = '<i class="fa fa-sort-up"></i>';
-		//var iconDown = '<i class="fa fa-sort-down"></i>';
 
 		for (var i = 0; i < this.options.headers.length; i++) {
 
@@ -199,7 +199,6 @@ var thead  = document.getElementById('tablehead');
 	BravoTable.prototype.UpdateSortIcons = function () {
 
 		var index = parseInt(event.target.getAttribute('data-index'));
-		// var index  = this.options.headers[3].dataindex;
 		console.log(index);
 	}
 
@@ -208,10 +207,50 @@ var thead  = document.getElementById('tablehead');
 		var row = document.querySelectorAll('tr');
 		row.innerHTML = '' ;
 		this.CreateHeader();
-		this.SearchUsername();
+	}
+
+	BravoTable.prototype.GetUsernames = function () {
+		this.getData();
+		var item ;
+		var SearchInput = document.getElementById('searchInput').value;
+		if (SearchInput.length >2) {
+			
+			for (var i = 0; i <this.options.rows.length; i++) {
+				//console.log(this.options.rows[i].username);
+				if(	this.options.rows[i].username.includes(SearchInput)){
+					//console.log( this.options.rows[i].username + " kalacak");
+					this.createRow(this.options.rows[i], i);
+					//console.log(this.options.rows);
+					//this.getFormIds.bind(this);
+					//console.log(this.options.rows.length);
+
+
+
+				}
+				else {
+					//console.log(this.options.rows[i].username + " silinecek");
+				this.options.rows.splice(this.options.rows[i], i);
+					
+					console.log("bulunamadı");
+
+
+				}
+			}
+		}
+
+		else {
+			InformationLabel.innerHTML = "En az 3 karakter ile arama yapınız.";
+
+		}
+
 	}
 
 	BravoTable.prototype.SearchUsername = function () {
+
+
+
+		console.log(SearchInput);
+
 	}
 
 	function extendDefaults(source, properties) {
