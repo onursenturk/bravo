@@ -217,22 +217,21 @@ var InformationLabel = document.getElementById("InformationLabel");
 			
 			for (var i = 0; i <this.options.rows.length; i++) {
 				//console.log(this.options.rows[i].username);
+				var onur = this.options.rows[i];
 				if(	this.options.rows[i].username.includes(SearchInput)){
-					//console.log( this.options.rows[i].username + " kalacak");
-					this.createRow(this.options.rows[i], i);
-					//console.log(this.options.rows);
-					//this.getFormIds.bind(this);
-					//console.log(this.options.rows.length);
-
-
+					//this.createRow(this.options.rows[i], i);
+					console.log(i + this.options.rows[i].username + " kalacak");
+					
+					//this.options.rows.style.display = " ";
 
 				}
 				else {
-					//console.log(this.options.rows[i].username + " silinecek");
-				this.options.rows.splice(this.options.rows[i], i);
-					
-					console.log("bulunamadı");
 
+					console.log(i + this.options.rows[i].username + " gidecek");
+					//onur.style.visibility = "hidden";
+					this.options.rows.splice(i,1);
+					//i--;
+					//this.options.rows.style.display = "none";
 
 				}
 			}
