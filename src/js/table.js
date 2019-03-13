@@ -107,6 +107,12 @@ var InformationLabel = document.getElementById("InformationLabel");
 
 	}
 
+	BravoTable.prototype.deleteRow = function (rowData ,index) {
+
+		this.options.rows.splice(index,1);
+		this.setData();
+	}
+
 
 	BravoTable.prototype.removePerson = function ( event ) {
 
@@ -221,17 +227,17 @@ var InformationLabel = document.getElementById("InformationLabel");
 				if(	this.options.rows[i].username.includes(SearchInput)){
 					//this.createRow(this.options.rows[i], i);
 					console.log(i + this.options.rows[i].username + " kalacak");
-					
+					//i++;
 					//this.options.rows.style.display = " ";
 
 				}
 				else {
 
-					console.log(i + this.options.rows[i].username + " gidecek");
-					//onur.style.visibility = "hidden";
-					this.options.rows.splice(i,1);
-					//i--;
 					//this.options.rows.style.display = "none";
+					console.log(i + this.options.rows[i].username + " gidecek");
+					this.deleteRow(this.options.rows[i], i);
+					i--;
+
 
 				}
 			}
