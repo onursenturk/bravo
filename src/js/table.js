@@ -44,8 +44,8 @@ var InformationLabel = document.getElementById("InformationLabel");
 		this.getData();
 		this.UpdateHeaders();
 		this.updateTable();
-		document.getElementById('save').addEventListener("click",this.SortRows.bind(this));
 		document.getElementById('SearchInputButton').addEventListener("click",this.GetUsernames.bind(this));
+		document.getElementById('ClearInputButton').addEventListener("click",this.updateTable.bind(this));
 
 	}
 
