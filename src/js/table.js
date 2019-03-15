@@ -20,6 +20,7 @@ var InformationLabel = document.getElementById("InformationLabel");
 			tbody : null,
 			thead : null,
 			rows : null,
+			searchedRows : [],
 			form :null,
 			activeSort :null,
 			headers: [
@@ -50,20 +51,23 @@ var InformationLabel = document.getElementById("InformationLabel");
 	BravoTable.prototype.getData = function () {
 
 		this.options.rows = JSON.parse(localStorage.getItem('localeusertable'));
+		//this.options.searchedRows.length = this.options.rows.length ;
+		//console.log(this.options.searchedRows.length);
+		
 	}
 
-	BravoTable.prototype.setData = function () {
+	BravoTable.prototype.setData = function (rowData) {
 
 		tbody.innerHTML = "";
-		for ( i = 0; i < this.options.rows.length; i++ ) {
-			this.createRow(this.options.rows[i], i);
+		for ( i = 0; i < rowData.length; i++ ) {
+			this.createRow(rowData[i], i);
 		}
 	}
 
 	BravoTable.prototype.updateTable = function () {
 
 		this.getData();
-		this.setData();
+		this.setData(this.options.rows);
 	}
 
 	BravoTable.prototype.createRow = function ( rowData, index ) {
@@ -102,15 +106,19 @@ var InformationLabel = document.getElementById("InformationLabel");
 		row.appendChild(cellRemove);
 
 		tbody.appendChild(row);
-		console.log(rowData.id);
+		//console.log(rowData.id);
 
 		
+	}
+
+	BravoTable.prototype.SearchRow = function (rowData , index) {
+
 	}
 
 	BravoTable.prototype.deleteRow = function (rowData ,index) {
 
 		this.options.rows.splice(index,1);
-		this.setData();
+		this.setData(this.options.rows);
 	}
 
 	BravoTable.prototype.removePerson = function ( event ,id ) {
@@ -118,10 +126,16 @@ var InformationLabel = document.getElementById("InformationLabel");
 		
 		var activeIndex = parseInt(event.target.getAttribute('data-index'));
 		var id = parseInt(event.target.getAttribute('data-id'));
-		//this.options.rows.splice(id, 1);
-		//localStorage.setItem('localeusertable', JSON.stringify(this.options.rows));
-		//this.updateTable();
-		console.log(id);
+		for (var i = 0; i < this.options.rows.length; i++) {
+
+			if (this.options.rows[i].id === id) {
+				console.log(this.options.rows);
+				this.options.rows.splice(this.options.rows[i], 1);
+				localStorage.setItem('localeusertable', JSON.stringify(this.options.rows));
+				this.updateTable();
+			}
+			
+		}
 
 	}
 
@@ -195,7 +209,7 @@ var InformationLabel = document.getElementById("InformationLabel");
 
 	BravoTable.prototype.SortRows = function () {
 
-		this.setData();
+		this.setData(this.options.rows);
 		this.UpdateSortIcons();
 	}
 
@@ -222,6 +236,8 @@ var InformationLabel = document.getElementById("InformationLabel");
 				var onur = this.options.rows[i];
 				if(	this.options.rows[i].username.includes(SearchInput)){
 					console.log(i + this.options.rows[i].username + " kalacak");
+					this.options.searchedRows[i] = this.options.rows[i];
+
 				}
 				else {
 					console.log(i + this.options.rows[i].username + " gidecek");
@@ -229,6 +245,8 @@ var InformationLabel = document.getElementById("InformationLabel");
 					i--;
 				}
 			}
+
+			console.log(this.options.searchedRows);
 		}
 		else {
 			InformationLabel.innerHTML = "En az 3 karakter ile arama yapınız.";
