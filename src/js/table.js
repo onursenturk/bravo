@@ -51,7 +51,6 @@ var InformationLabel = document.getElementById("InformationLabel");
 	BravoTable.prototype.getData = function () {
 
 		this.options.rows = JSON.parse(localStorage.getItem('localeusertable'));
-		
 	}
 
 	BravoTable.prototype.setData = function (rowData) {
@@ -104,8 +103,6 @@ var InformationLabel = document.getElementById("InformationLabel");
 		row.appendChild(cellRemove);
 
 		tbody.appendChild(row);
-		//console.log(rowData.id);
-
 		
 	}
 
@@ -121,27 +118,18 @@ var InformationLabel = document.getElementById("InformationLabel");
 
 	BravoTable.prototype.removePerson = function ( event ,id ) {
 
-
-		
 		var activeIndex = parseInt(event.target.getAttribute('data-index'));
 		var id = parseInt(event.target.getAttribute('data-id'));
 		for (var i = 0; i < this.options.rows.length; i++) {
 
 			this.getData();
-			console.log(this.options.rows);
 
 			if (this.options.rows[i].id === id) {
-
-				console.log(this.options.rows[i]);
 				this.options.rows.splice(i, 1);
 				localStorage.setItem('localeusertable', JSON.stringify(this.options.rows));
 				this.updateTable();
-				console.log("silinen id : " + id);
-				console.log(this.options.rows);
-
 			}
 		}
-
 	}
 
 	BravoTable.prototype.sortPerson = function (event) {
@@ -161,7 +149,6 @@ var InformationLabel = document.getElementById("InformationLabel");
 
         this.options.rows.sort(sortFunc);
         this.SortRows();
-
     }
 
     BravoTable.prototype.toggleSortIcons = function ( index ) {
@@ -175,9 +162,7 @@ var InformationLabel = document.getElementById("InformationLabel");
     		} else {
     			this.options.headers[i].asc = null;
     		}
-
     		headers[i].setAttribute('data-asc', this.options.headers[i].asc);
-
     	}
 
     }
@@ -205,7 +190,6 @@ var InformationLabel = document.getElementById("InformationLabel");
 				wrapper.appendChild(iconUp);
 				wrapper.appendChild(iconDown);
 				header.addEventListener("click",this.sortPerson.bind(this));
-
 			}
 			header.appendChild(wrapper);
 			theadTr.appendChild(header);
@@ -233,25 +217,35 @@ var InformationLabel = document.getElementById("InformationLabel");
 
 	BravoTable.prototype.GetUsernames = function () {
 		this.getData();
+		var last_element = this.options.rows[this.options.rows.length -1] ;
+		console.log(last_element);
 		var SearchInput = document.getElementById('searchInput').value;
 		if (SearchInput.length >2) {
 			
 			for (var i = 0; i < this.options.rows.length; i++) {
+
 				if(	this.options.rows[i].username.includes(SearchInput)){
+
+					if(last_element) {
+
+						console.log("last item");
+					}	
+					else {
+
 					console.log(i + this.options.rows[i].username + " kalacak");
 					this.options.searchedRows[i] = this.options.rows[i];
 					this.createRow(this.options.searchedRows[i],i);
+					console.log(this.options.searchedRows[i]);
 
+					}
 				}
 				else {
 					console.log(i + this.options.rows[i].username + " gidecek");
-					
 					this.deleteRow(this.options.rows[i], i);
+					this.options.searchedRows.splice(i,1);
 					i--;
 				}
 			}
-
-			
 		}
 		else {
 			InformationLabel.innerHTML = "En az 3 karakter ile arama yapınız.";
