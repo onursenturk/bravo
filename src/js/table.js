@@ -51,8 +51,6 @@ var InformationLabel = document.getElementById("InformationLabel");
 	BravoTable.prototype.getData = function () {
 
 		this.options.rows = JSON.parse(localStorage.getItem('localeusertable'));
-		//this.options.searchedRows.length = this.options.rows.length ;
-		//console.log(this.options.searchedRows.length);
 		
 	}
 
@@ -123,18 +121,25 @@ var InformationLabel = document.getElementById("InformationLabel");
 
 	BravoTable.prototype.removePerson = function ( event ,id ) {
 
+
 		
 		var activeIndex = parseInt(event.target.getAttribute('data-index'));
 		var id = parseInt(event.target.getAttribute('data-id'));
 		for (var i = 0; i < this.options.rows.length; i++) {
 
+			this.getData();
+			console.log(this.options.rows);
+
 			if (this.options.rows[i].id === id) {
-				console.log(this.options.rows);
-				this.options.rows.splice(this.options.rows[i], 1);
+
+				console.log(this.options.rows[i]);
+				this.options.rows.splice(i, 1);
 				localStorage.setItem('localeusertable', JSON.stringify(this.options.rows));
 				this.updateTable();
+				console.log("silinen id : " + id);
+				console.log(this.options.rows);
+
 			}
-			
 		}
 
 	}
@@ -228,29 +233,32 @@ var InformationLabel = document.getElementById("InformationLabel");
 
 	BravoTable.prototype.GetUsernames = function () {
 		this.getData();
-		var item ;
 		var SearchInput = document.getElementById('searchInput').value;
 		if (SearchInput.length >2) {
 			
-			for (var i = 0; i <this.options.rows.length; i++) {
-				var onur = this.options.rows[i];
+			for (var i = 0; i < this.options.rows.length; i++) {
 				if(	this.options.rows[i].username.includes(SearchInput)){
 					console.log(i + this.options.rows[i].username + " kalacak");
 					this.options.searchedRows[i] = this.options.rows[i];
+					this.createRow(this.options.searchedRows[i],i);
 
 				}
 				else {
 					console.log(i + this.options.rows[i].username + " gidecek");
+					
 					this.deleteRow(this.options.rows[i], i);
 					i--;
 				}
 			}
 
-			console.log(this.options.searchedRows);
+			
 		}
 		else {
 			InformationLabel.innerHTML = "En az 3 karakter ile arama yapınız.";
 		}
+
+		console.log(this.options.searchedRows);
+		console.log(this.options.rows);
 	}
 
 	BravoTable.prototype.SearchUsername = function () {
