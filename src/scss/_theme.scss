@@ -18,15 +18,26 @@ body {
 				color : white;
 			}
 			&[data-asc="true"] {
+				background-color: #606060;
 				i.fa-sort-down {
 					display: block;
 				}
 			}
 			&[data-asc="false"] {
+				background-color: #585858;
 				i.fa-sort-up {
 					display: block;
 				}
 			}
 		}
+	}
+
+	#table-body {
+
+		.rowlight {
+
+			background-color: 	#F0F0F0;
+		}
+
 	}
 }

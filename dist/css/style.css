@@ -7463,7 +7463,14 @@ body {
     color: red;
     pointer-events: none;
     color: white; }
-  .table #tablehead th[data-asc="true"] i.fa-sort-down {
-    display: block; }
-  .table #tablehead th[data-asc="false"] i.fa-sort-up {
-    display: block; }
+  .table #tablehead th[data-asc="true"] {
+    background-color: #606060; }
+    .table #tablehead th[data-asc="true"] i.fa-sort-down {
+      display: block; }
+  .table #tablehead th[data-asc="false"] {
+    background-color: #585858; }
+    .table #tablehead th[data-asc="false"] i.fa-sort-up {
+      display: block; }
+
+.table #table-body .rowlight {
+  background-color: #F0F0F0; }

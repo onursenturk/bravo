@@ -55,9 +55,16 @@ var InformationLabel = document.getElementById("InformationLabel");
 
 	BravoTable.prototype.setData = function (rowData) {
 
-		tbody.innerHTML = "";
-		for ( i = 0; i < rowData.length; i++ ) {
-			this.createRow(rowData[i], i);
+		if (rowData.length > 0) {
+			tbody.innerHTML = "";
+			for ( i = 0; i < rowData.length; i++ ) {
+				this.createRow(rowData[i], i);
+			}
+		}
+		else {
+			console.log("tablo boş");
+			// buraya tablo boş alanı gelecek. //
+			tbody.innerHTML = '<img class="offset-6" align="center"  src="src/img/noperson.jpg"> <h5 class="offset-8">Kişiler Bulunamadı.</h5>';
 		}
 	}
 
@@ -103,12 +110,12 @@ var InformationLabel = document.getElementById("InformationLabel");
 		row.appendChild(cellRemove);
 
 		tbody.appendChild(row);
-		
+
+		if(index % 2) {
+			row.classList.add('rowlight');
+		}
 	}
 
-	BravoTable.prototype.SearchRow = function (rowData , index) {
-
-	}
 
 	BravoTable.prototype.deleteRow = function (rowData ,index) {
 
@@ -176,7 +183,7 @@ var InformationLabel = document.getElementById("InformationLabel");
 			var header = document.createElement('th');
 			header.setAttribute('data-index',i);
 			var wrapper = document.createElement('div');
-			wrapper.classList.add('d-flex', 'd-flex-row', 'justify-content-between', 'align-items-center');
+			wrapper.classList.add('d-flex', 'd-flex-row', 'justify-content-between', 'align-items-center' ,'active');
 			var title = document.createElement('span');
 			title.innerHTML = this.options.headers[i].title;
 			wrapper.appendChild(title);
@@ -223,15 +230,11 @@ var InformationLabel = document.getElementById("InformationLabel");
 		if (SearchInput.length >2) {
 			
 			for (var i = 0; i < this.options.rows.length; i++) {
-
 				if(	this.options.rows[i].username.includes(SearchInput)){
-
 					if(last_element) {
-
 						console.log("last item");
 					}	
 					else {
-
 					console.log(i + this.options.rows[i].username + " kalacak");
 					this.options.searchedRows[i] = this.options.rows[i];
 					this.createRow(this.options.searchedRows[i],i);
@@ -253,11 +256,6 @@ var InformationLabel = document.getElementById("InformationLabel");
 
 		console.log(this.options.searchedRows);
 		console.log(this.options.rows);
-	}
-
-	BravoTable.prototype.SearchUsername = function () {
-
-		console.log(SearchInput);
 	}
 
 	function extendDefaults(source, properties) {
